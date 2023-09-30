@@ -21,7 +21,8 @@ stage('tomcat-deploymnet') {
             steps {
                 sshagent(['tomcat-server']) {
                 sh """
-                scp -o StrictHostKeyChecking=no target/myweb.war ubuntu@3.89.205.63:/opt/tomcat9/webapps/
+                scp -o StrictHostKeyChecking=no target/myweb.war ubuntu@3.89.205.63:/home/ubuntu
+                ssh ubuntu@3.89.205.63 'sudo mv /home/ubuntu/myweb.war /var/lib/tomcat9/webapp/'
                 ssh ubuntu@3.89.205.63 'systemctl restart tomcat9.service'
 
                 """
