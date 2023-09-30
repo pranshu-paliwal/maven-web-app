@@ -14,6 +14,18 @@ pipeline {
          stage('Build') {
             steps {
                 sh 'mvn clean package'
+                sh "mv target/*.war target/myweb.war"
+            }
+        }
+stage('tomcat-deploymnet') {
+            steps {
+                sshagent(['tomcat-server']) {
+                sh """
+                 scp -o StrictHostKeyChecking=no target/myweb.war ubuntu@3.89.205.63":/var/lib/tomcat9/webapps/
+                ssh ubuntu@3.89.205.63 'systemctl restart tomcat9.service'
+
+                """
+            }
             }
         }
     }
